@@ -84,5 +84,4 @@ public class HelloWorldController {
 
         return ResponseEntity.ok().body(arrayList);
     }
-
 }
