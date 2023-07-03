@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarInfors"> <!-- name space 는 파일 앞부분이랑 명칭 똑같게 설정 -->
+    <!-- 상세 -->
+	<select id="selectByUID" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.car_infors
+        WHERE CAR_INFOR_ID = #{CAR_INFOR_ID} <!-- 오른쪽은 외부에서 들어오는 변수값(표시만 해놓은 것) -->
+	</select>
+    <!-- 입력 -->
+    <insert id="insert" parameterType="Map"> <!-- id는 메소드 네임과 비슷하므로 unique로 지정해줘야 한다. 태그 이름도 id값과 똑같이 설정-->
+        INSERT INTO car_infors
+        (CAR_NAME, YEAR, CAR_INFOR_ID, COMPANY_ID)
+        values
+        (#{CAR_NAME}, #{YEAR}, #{CAR_INFOR_ID}, #{COMPANY_ID}) <!-- 외부에서 받아들이는 변수 부분이므로 변수라는 것을 표시한다. -->
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="Map">
+        UPDATE car_infors
+        SET CAR_NAME = #{CAR_NAME}
+        WHERE CAR_INFOR_ID = #{CAR_INFOR_ID}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="Map">
+        DELETE FROM car_infors
+        WHERE CAR_INFOR_ID = #{CAR_INFOR_ID}
+    </delete>
+</mapper>
