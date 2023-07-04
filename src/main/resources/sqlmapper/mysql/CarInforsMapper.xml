@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CarInfors"> <!-- name space 는 파일 앞부분이랑 명칭 똑같게 설정 -->
+    
+ <!-- 검색 -->
+	<select id="selectSearch" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.car_infors
+        WHERE 1 = 1 <!-- 전체 출력을 하기 위해 where 조건문에 1=1인 항상 참인 값을 넣는다. -->
+        <choose>
+            <when test="search == 'YEAR' ">
+                <![CDATA[
+                and YEAR > #{words} 
+                ]]> <!-- 쿼리 안에 특정 기호를 사용시 <![CDATA[]] 를 사용해야한다.-->
+            </when>
+            <otherwise>
+                and CAR_NAME like CONCAT(#{words}, '%') <!-- %를 연결하려고 concat을 사용한다. -->
+            </otherwise>
+        </choose>
+	</select>
+    
+    <!-- 2023-07-04 mybatis foreach ("CAR_INFOR_ID_LIST", CAR_INFOR_ID_LIST)-->
+  <!-- mybatis foreach HashMap.put("CAR_INFOR_ID_LIST", CAR_INFOR_ID_LIST)-->
+	<select id="selectInUID" parameterType="Map" resultType="Map">    
+        SELECT * 
+        FROM db_cars.car_infors
+        where 1 = 1
+        and CAR_INFOR_ID in 
+        <foreach item="CAR_INFOR_ID" index="index" collection="CAR_INFOR_ID_LIST"
+            open="(" separator="," close=")" nullable="true">
+            #{CAR_INFOR_ID}
+        </foreach>
+        ; 
+	</select>
+   
+    <!-- 전체  2023-07-03 -->
+	<select id="selectAll" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.car_infors
+        WHERE 1 = 1 ;  <!-- 1=1은 query문 사이사이 변수,string  -->
+	</select>
+    
+    
     <!-- 상세 -->
 	<select id="selectByUID" parameterType="Map" resultType="Map">
         SELECT * 
         FROM db_cars.car_infors
         WHERE CAR_INFOR_ID = #{CAR_INFOR_ID} <!-- 오른쪽은 외부에서 들어오는 변수값(표시만 해놓은 것) -->
 	</select>
+
     <!-- 입력 -->
     <insert id="insert" parameterType="Map"> <!-- id는 메소드 네임과 비슷하므로 unique로 지정해줘야 한다. 태그 이름도 id값과 똑같이 설정-->
         INSERT INTO car_infors

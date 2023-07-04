@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarCompany"> <!-- name space 는 파일 앞부분이랑 명칭 똑같게 설정 -->
+    
+ <!-- 검색 -->
+	<select id="selectSearch" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.factorys
+        WHERE 1 = 1 <!-- 전체 출력을 하기 위해 where 조건문에 1=1인 항상 참인 값을 넣는다. -->
+        <choose>
+            <when test="COMPANY_ID' ">
+                <![CDATA[
+                and COMPANY_ID = #{words} 
+                ]]> <!-- 쿼리 안에 특정 기호를 사용시 <![CDATA[]] 를 사용해야한다.-->
+            </when>
+            <otherwise>
+                and COMPANY like CONCAT(#{words}, '%') <!-- %를 연결하려고 concat을 사용한다. -->
+            </otherwise>
+        </choose>
+	</select>
+    
+    <!-- 전체 -->
+	<select id="selectAll" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.factorys
+        WHERE 1 = 1 ;  <!-- 1=1은 query문 사이사이 변수,string  -->
+	</select>
+    
+    
+    <!-- 상세 -->
+	<select id="selectByUID" parameterType="Map" resultType="Map">
+        SELECT * 
+        FROM db_cars.factorys
+        WHERE COMPANY_ID = #{COMPANY_ID} <!-- 오른쪽은 외부에서 들어오는 변수값(표시만 해놓은 것) -->
+	</select>
+
+    <!-- 입력 -->
+    <insert id="insert" parameterType="Map"> <!-- id는 메소드 네임과 비슷하므로 unique로 지정해줘야 한다. 태그 이름도 id값과 똑같이 설정-->
+        INSERT INTO factorys
+        (COMPANY_ID, COMPANY)
+        values
+        (#{COMPANY_ID}, #{COMPANY}) <!-- 외부에서 받아들이는 변수 부분이므로 변수라는 것을 표시한다. -->
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="Map">
+        UPDATE factorys
+        SET COMPANY = #{COMPANY}
+        WHERE COMPANY_ID = #{COMPANY_ID}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="Map">
+        DELETE FROM factorys
+        WHERE COMPANY_ID = #{COMPANY_ID}
+    </delete>
+</mapper>
