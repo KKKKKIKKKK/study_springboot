@@ -51,10 +51,30 @@
                             <th>Car Name</th>
                             <th>ID</th>
                             <th>Manufacturer ID</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody id="carTableBody">
-                        <!-- Empty -->
+                    <form action="/delete" method="">
+                        <input type="hidden" name="CAR_INFOR_ID" vlaue="" id="">
+                    <tr>
+
+                        <td>2021</td>
+                        <td>코나</td>
+                        <td>CAR-01</td>
+                        <td>FA-01</td>
+                        <td><button formaction="http://127.0.0.1:8080/carInfor/delete" formmethod="post">Del</button></td>
+                    </tr>
+                </form> 
+                <form action="" method="get">
+                    <tr>
+                        <td>2021</td>
+                        <td>요주랩</td>
+                        <td>CAR-02</td>
+                        <td>FA-01</td>
+                        <td><button formaction="http://127.0.0.1:8080/carInfor/delete" formmethod="post">Del</button></td>
+                    </tr>
+                </form>
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation">
